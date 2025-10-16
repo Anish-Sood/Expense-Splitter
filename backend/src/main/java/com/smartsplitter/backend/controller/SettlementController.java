@@ -26,7 +26,6 @@ public class SettlementController {
 
     @GetMapping("/group/{groupId}")
     public ResponseEntity<List<SettlementDto>> getSettlementsForGroup(@PathVariable Long groupId) {
-        // As before, a real app would have a security check here
         List<SettlementDto> settlements = settlementService.calculateSettlements(groupId);
         return ResponseEntity.ok(settlements);
     }

@@ -25,7 +25,7 @@ public class GroupService {
     @Transactional
     public Group createGroup(String groupName) {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String username = userDetails.getUsername();
+        String username = userDetails.getUsername(); // This is the user's email
 
         User currentUser = userRepository.findByEmail(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -33,6 +33,7 @@ public class GroupService {
         Group newGroup = new Group();
         newGroup.setName(groupName);
         newGroup.setCreatedBy(currentUser);
+
         newGroup.getMembers().add(currentUser);
 
         return groupRepository.save(newGroup);

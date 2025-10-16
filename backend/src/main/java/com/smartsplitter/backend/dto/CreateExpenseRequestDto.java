@@ -13,5 +13,5 @@ public class CreateExpenseRequestDto {
     private Long groupId;
     private ExpenseCategory category;
     private SplitType splitType;
-    private List<SplitDetailDto> splits;
+    private List<SplitDetailDto> splits; // For BY_AMOUNT and BY_PERCENTAGE
 }

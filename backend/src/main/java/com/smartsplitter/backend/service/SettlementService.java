@@ -26,9 +26,12 @@ public class SettlementService {
     }
 
     public List<SettlementDto> calculateSettlements(Long groupId) {
-        Group group = groupRepository.findByIdWithMembers(groupId)
+        
+        Group group = groupRepository.findByIdWithMembers(groupId) // <-- Use the new method
                 .orElseThrow(() -> new RuntimeException("Group not found"));
 
+
+        
         Map<User, BigDecimal> balances = new HashMap<>();
         for (User member : group.getMembers()) {
             balances.put(member, BigDecimal.ZERO);
@@ -62,7 +65,7 @@ public class SettlementService {
             Map.Entry<User, BigDecimal> debtor = debtors.get(debtorIndex);
 
             BigDecimal amountCredited = creditor.getValue();
-            BigDecimal amountDebited = debtor.getValue().abs();
+            BigDecimal amountDebited = debtor.getValue().abs(); // Use the absolute value
 
             BigDecimal settlementAmount = amountCredited.min(amountDebited);
 

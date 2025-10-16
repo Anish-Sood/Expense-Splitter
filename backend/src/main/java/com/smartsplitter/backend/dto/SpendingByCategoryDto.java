@@ -9,6 +9,6 @@ import java.math.BigDecimal;
 @Data
 @AllArgsConstructor
 public class SpendingByCategoryDto {
-    private ExpenseCategory name;
+    private ExpenseCategory name; 
     private BigDecimal amount;
 }

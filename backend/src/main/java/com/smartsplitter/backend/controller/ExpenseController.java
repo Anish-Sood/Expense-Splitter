@@ -19,6 +19,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 import com.smartsplitter.backend.dto.SpendingByCategoryDto;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.PutMapping;
 
 
 @RestController
@@ -41,7 +44,7 @@ public class ExpenseController {
             Expense newExpense = expenseService.createExpense(requestDto);
             return ResponseEntity.ok(convertToDto(newExpense));
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(null);
+            return ResponseEntity.badRequest().body(null); 
         }
     }
 
@@ -68,6 +71,7 @@ public class ExpenseController {
     }
     @GetMapping("/group/{groupId}")
     public ResponseEntity<List<ExpenseResponseDto>> getExpensesForGroup(@PathVariable Long groupId) {
+
         List<Expense> expenses = expenseRepository.findByGroupIdWithDetails(groupId);
 
         List<ExpenseResponseDto> expenseDtos = expenses.stream()
@@ -78,7 +82,32 @@ public class ExpenseController {
     }
     @GetMapping("/group/{groupId}/insights/by-category")
     public ResponseEntity<List<SpendingByCategoryDto>> getSpendingByCategory(@PathVariable Long groupId) {
+        
         List<SpendingByCategoryDto> spendingData = expenseService.getSpendingByCategory(groupId);
         return ResponseEntity.ok(spendingData);
+    }
+    @DeleteMapping("/{expenseId}")
+    public ResponseEntity<Void> deleteExpense(@PathVariable Long expenseId) {
+        try {
+            expenseService.deleteExpense(expenseId);
+            return ResponseEntity.noContent().build();
+        } catch (SecurityException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+    @PutMapping("/{expenseId}")
+    public ResponseEntity<ExpenseResponseDto> editExpense(
+            @PathVariable Long expenseId,
+            @RequestBody CreateExpenseRequestDto requestDto) {
+        try {
+            Expense editedExpense = expenseService.editExpense(expenseId, requestDto);
+            return ResponseEntity.ok(convertToDto(editedExpense));
+        } catch (SecurityException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 }

@@ -9,5 +9,5 @@ import java.math.BigDecimal;
 public class BalanceDto {
     private Long userId;
     private String userName;
-    private BigDecimal netBalance;
+    private BigDecimal netBalance; 
 }

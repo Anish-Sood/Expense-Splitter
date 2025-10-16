@@ -13,17 +13,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/api/auth") 
 public class AuthController {
 
     private final AuthService authService;
 
-    @Autowired
+    @Autowired 
     public AuthController(AuthService authService) {
         this.authService = authService;
     }
 
-    @PostMapping("/register")
+    @PostMapping("/register") 
     public ResponseEntity<?> registerUser(@RequestBody RegisterRequestDto registerRequestDto) {
         User newUser = new User();
         newUser.setName(registerRequestDto.getName());
@@ -32,7 +32,9 @@ public class AuthController {
 
         try {
             User savedUser = authService.registerUser(newUser);
+
             return ResponseEntity.ok("User registered successfully!");
+
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

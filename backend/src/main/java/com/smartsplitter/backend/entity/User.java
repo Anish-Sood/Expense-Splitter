@@ -7,8 +7,8 @@ import lombok.Data;
 @Entity
 @Table(name = "users")
 public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id 
+    @GeneratedValue(strategy = GenerationType.IDENTITY) 
     private Long id;
 
     @Column(nullable = false)
@@ -18,6 +18,6 @@ public class User {
     private String email;
 
     @Column(nullable = false)
-    private String password;
+    private String password; 
 }
 
